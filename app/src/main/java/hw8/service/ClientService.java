@@ -11,11 +11,13 @@ import java.util.List;
 import hw8.Database;
 import hw8.model.Queries;
 import hw8.model.Client;
-import hw8.model.LongestProject;
 
 public class ClientService {
     private static Connection conn = Database.getConnection();
-    public static long create(String name) {
+    public static long create(String name) throws Exception {
+        if (name.length() < 3 || name.length() > 256) {
+            throw new Exception("Invalid argument");
+        }
         String[] keyColumn = {"id"};
         try (PreparedStatement statement = conn.prepareStatement(Queries.CREATE_CLIENT_TEMPLATE, keyColumn)) {
             statement.setString(1, name);
@@ -33,7 +35,10 @@ public class ClientService {
         return 0;
     }
 
-    public static String getById(long id) {
+    public static String getById(long id) throws Exception {
+        if (id < 1) {
+            throw new Exception("Invalid argument");
+        }
         try (PreparedStatement statement = conn.prepareStatement(Queries.GET_CLIENT_NAME_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
@@ -47,7 +52,10 @@ public class ClientService {
         return null;
     }
 
-    public static void setName(long id, String name) {
+    public static void setName(long id, String name) throws Exception {
+        if (id < 1 || name.length() < 3 || name.length() > 256) {
+            throw new Exception("Invalid argument");
+        }
         try (PreparedStatement statement = conn.prepareStatement(Queries.SET_CLIENT_NAME_BY_ID)) {
             statement.setLong(2, id);
             statement.setString(1, name);
@@ -57,7 +65,10 @@ public class ClientService {
         }
     }
 
-    public static void deleteById(long id) {
+    public static void deleteById(long id) throws Exception {
+        if (id < 1) {
+            throw new Exception("Invalid argument");
+        }
         try (PreparedStatement statement = conn.prepareStatement(Queries.DELETE_CLIENT_BY_ID)) {
             statement.setLong(1, id);
             statement.executeUpdate();
