@@ -3,9 +3,23 @@
  */
 package hw8;
 
+import hw8.service.ClientService;
 
 public class App {
     public static void main(String[] args) {
         DatabaseMigration.main(args);
+
+        long client_id = ClientService.create("John Dou");
+        System.out.println(client_id);
+        
+        System.out.println(ClientService.getById(client_id));
+
+        ClientService.setName(client_id, "Umbrella Corp.");
+        System.out.println(ClientService.getById(client_id));
+
+        ClientService.deleteById(client_id);
+        System.out.println(ClientService.getById(client_id));
+
+        System.out.println(ClientService.listAll());
     }
 }

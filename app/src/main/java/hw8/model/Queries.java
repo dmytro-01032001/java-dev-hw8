@@ -86,4 +86,19 @@ public class Queries {
                 FOREIGN KEY (WORKER_ID) REFERENCES worker(ID)
             );
         """;
+    public static final String CREATE_CLIENT_TEMPLATE = """
+            INSERT INTO client (name) VALUES (?)
+            """;
+    public static final String GET_CLIENT_NAME_BY_ID = """
+            SELECT name from client where ID=(?)
+            """;
+    public static final String SET_CLIENT_NAME_BY_ID = """
+            UPDATE client SET name = (?) WHERE id = (?)
+            """;
+    public static final String DELETE_CLIENT_BY_ID = """
+            DELETE FROM client WHERE id = (?)
+            """;
+    public static final String SELECT_ALL_CLIENTS = """
+            SELECT id, name from client
+            """;
 }
