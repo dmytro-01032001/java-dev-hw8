@@ -3,25 +3,35 @@
  */
 package hw8;
 
+import java.sql.Connection;
+
+import hw8.dao.ClientDaoService;
+import hw8.dao.ClientDaoServiceImpl;
 import hw8.service.ClientService;
+import hw8.service.ClientServiceImpl;
+import hw8.model.Client;
 
 public class App {
     public static void main(String[] args) {
         DatabaseMigration.main(args);
 
         try {
-            long client_id = ClientService.create("John Dou");
-            System.out.println(client_id);
+            Connection conn = Database.getConnection();
+            ClientDaoService daoService = new ClientDaoServiceImpl(conn);
+            ClientService clientService = new ClientServiceImpl(daoService);
+
+            Client client = clientService.create("John Dou");
+            System.out.println(client);
             
-            System.out.println(ClientService.getById(client_id));
+            System.out.println(clientService.read(client.getId()));
     
-            ClientService.setName(client_id, "Umbrella Corp.");
-            System.out.println(ClientService.getById(client_id));
+            clientService.update(client, "Umbrella Corp.");
+            System.out.println(clientService.read(client.getId()));
     
-            ClientService.deleteById(client_id);
-            System.out.println(ClientService.getById(client_id));
+            clientService.delete(client);
+            System.out.println(clientService.read(client.getId()));
     
-            System.out.println(ClientService.listAll());
+            System.out.println(clientService.listAll());
         } catch (Exception e) {
             e.printStackTrace();
         }
